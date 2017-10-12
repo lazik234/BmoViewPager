@@ -95,7 +95,10 @@ public class BmoViewPager: UIView, UIScrollViewDelegate {
                     }
                 }
                 if reuseIt == false {
-                    pageViewController.setViewPagerPage(presentedPageIndex)
+                    boundChanged = true
+                    pageViewController.setViewPagerPage(presentedPageIndex, completion:{_ in
+                        self.boundChanged = false
+                    })
                 }
             }
         }
