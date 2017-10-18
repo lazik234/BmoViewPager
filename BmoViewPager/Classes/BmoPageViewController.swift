@@ -45,9 +45,9 @@ class BmoPageViewController: UIPageViewController, UIPageViewControllerDataSourc
     
     // MARK: - Private
     func findScrollViewIfNeed() {
-        if self.pageScrollView != nil {
-            return
-        }
+//        if self.pageScrollView != nil {
+//            return
+//        }
         for subView in self.view.subviews {
             if let scrollView = subView as? UIScrollView {
                 self.pageScrollView = scrollView
