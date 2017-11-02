@@ -9,6 +9,7 @@
 import UIKit
 
 @objc public protocol BmoViewPagerDataSource {
+    func parentViewController(in viewPager: BmoViewPager) -> UIViewController?
     func bmoViewPagerDataSourceNumberOfPage(in viewPager: BmoViewPager) -> Int
     func bmoViewPagerDataSource(_ viewPager: BmoViewPager, viewControllerForPageAt page: Int) -> UIViewController
     
@@ -116,7 +117,7 @@ public class BmoViewPager: UIView, UIScrollViewDelegate {
     public weak var dataSource: BmoViewPagerDataSource? {
         didSet {
             if !inited { return }
-            self.parentViewController = (dataSource as? UIViewController)
+            self.parentViewController = dataSource?.parentViewController(in: self)
             pageViewController.bmoDataSource = dataSource
             navigationBars.forEach { (weakBar: WeakBmoVPbar<BmoViewPagerNavigationBar>) in
                 if let bar = weakBar.bar {
@@ -183,7 +184,7 @@ public class BmoViewPager: UIView, UIScrollViewDelegate {
                     bar.pageViewController = pageViewController
                 }
             }
-            self.parentViewController = (self.dataSource as? UIViewController)
+            self.parentViewController = self.dataSource?.parentViewController(in: self)
             pageViewController.infinitScroll = self.infinitScroll
             pageViewController.bmoDataSource = self.dataSource
             pageViewController.reloadData()
