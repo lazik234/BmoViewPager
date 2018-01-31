@@ -80,11 +80,11 @@ class BmoPageViewController: UIPageViewController, UIPageViewControllerDataSourc
     func reloadData() {
         self.setPageViewController()
     }
-    func setViewPagerPage(_ page: Int, completion: @escaping ((Bool) -> Swift.Void) ) {
+    func setViewPagerPage(_ page: Int, animated:Bool, completion: @escaping ((Bool) -> Swift.Void) ) {
         if page >= pageCount { return }
         if let vc = bmoDataSource?.bmoViewPagerDataSource(bmoViewPager, viewControllerForPageAt: page) {
             let direction = bmoViewPager.lastPresentedPageIndex < page ? UIPageViewControllerNavigationDirection.forward : UIPageViewControllerNavigationDirection.reverse
-            self.setViewControllers([vc], direction: direction, animated: true, completion:completion)
+            self.setViewControllers([vc], direction: direction, animated: animated, completion:completion)
             bmoViewPager.delegate?.bmoViewPagerDelegate?(bmoViewPager, didAppear: vc, page: page)
             vc.view.bmoVP.setIndex(page)
             vc.view.bmoVP.setOwner(vc)

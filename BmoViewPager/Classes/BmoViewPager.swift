@@ -96,9 +96,9 @@ public class BmoViewPager: UIView, UIScrollViewDelegate {
                     }
                 }
                 if reuseIt == false {
-                    boundChanged = true
-                    pageViewController.setViewPagerPage(presentedPageIndex, completion:{_ in
-                        self.boundChanged = false
+                    isUserInteractionEnabled = false
+                    pageViewController.setViewPagerPage(presentedPageIndex, animated:isInterporationAnimated, completion:{_ in
+                        self.isUserInteractionEnabled = true
                     })
                 }
             }
@@ -150,12 +150,16 @@ public class BmoViewPager: UIView, UIScrollViewDelegate {
     fileprivate var boundChanged: Bool = false
     fileprivate var inited = false
     
-    public override var bounds: CGRect {
-        didSet {
+    public func dontTrackScroll(_ time:TimeInterval){
             boundChanged = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + time) {
                 self.boundChanged = false
             }
+        }
+    
+    public override var bounds: CGRect {
+        didSet {
+            dontTrackScroll(0.1)
         }
     }
     override init(frame: CGRect) {
@@ -217,6 +221,9 @@ public class BmoViewPager: UIView, UIScrollViewDelegate {
     // MARK: - UIScrollViewDelegate
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if boundChanged { return }
+        let x = max(0, min(scrollView.contentOffset.x, scrollView.frame.size.width*2))
+        let y = max(0, min(scrollView.contentOffset.y, scrollView.frame.size.height*2))
+        scrollView.contentOffset = CGPoint(x:x, y:y)
         let offSet = lastContentOffSet ?? scrollView.contentOffset
         if self.orientation == .horizontal {
             if abs(offSet.x - scrollView.contentOffset.x) > scrollView.bounds.width * 0.7 {
@@ -248,6 +255,7 @@ public class BmoViewPager: UIView, UIScrollViewDelegate {
             let originY = scrollView.contentOffset.y
             progressFraction = (originY - pageViewController.view.bounds.height) / pageViewController.view.bounds.height
         }
+        
         var targetIndex = 0
         if progressFraction > 0.0 {
             targetIndex = (progressFraction > 0.5 ? 2 : 1)
