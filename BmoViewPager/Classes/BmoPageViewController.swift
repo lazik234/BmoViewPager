@@ -8,11 +8,11 @@
 
 import UIKit
 
-class BmoPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+public class BmoPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     weak var scrollViewDelegate: UIScrollViewDelegate?
     weak var bmoDataSource: BmoViewPagerDataSource?
     weak var bmoViewPager: BmoViewPager!
-    var pageScrollView: UIScrollView?
+    public var pageScrollView: UIScrollView?
     var infinitScroll: Bool = false
     var scrollable: Bool = true {
         didSet {
@@ -31,13 +31,13 @@ class BmoPageViewController: UIPageViewController, UIPageViewControllerDataSourc
         self.view.backgroundColor = .clear
         self.scrollViewDelegate = scrollDelegate
     }
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
     }
-    override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.findScrollViewIfNeed()
         self.pageScrollView?.frame = self.view.bounds
@@ -99,7 +99,7 @@ class BmoPageViewController: UIPageViewController, UIPageViewControllerDataSourc
     }
     
     // MARK: - PageViewDelegate
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         var nextIndex = (viewController.view.bmoVP.index() ?? bmoViewPager.presentedPageIndex) - 1
         if nextIndex < 0 {
             if self.infinitScroll {
@@ -115,7 +115,7 @@ class BmoPageViewController: UIPageViewController, UIPageViewControllerDataSourc
         vc.view.bmoVP.setOwner(vc)
         return vc
     }
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         var nextIndex = (viewController.view.bmoVP.index() ?? bmoViewPager.presentedPageIndex) + 1
         if nextIndex > pageCount - 1 {
             if self.infinitScroll {

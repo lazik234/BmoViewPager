@@ -139,7 +139,7 @@ public class BmoViewPager: UIView, UIScrollViewDelegate {
         }
     }
     
-    lazy fileprivate var pageViewController: BmoPageViewController = {
+    public lazy var pageViewController: BmoPageViewController = {
         let pageVC = BmoPageViewController(viewPager: self, scrollDelegate: self, orientation: self.orientation)
         self.addSubview(pageVC.view)
         pageVC.view.bmoVP.autoFit(self)
