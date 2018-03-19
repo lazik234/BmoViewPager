@@ -25,6 +25,7 @@ import UIKit
     @objc optional func bmoViewPagerDelegate(_ viewPager: BmoViewPager, shouldSelect page: Int) -> Bool
     @objc optional func bmoViewPagerDelegate(_ viewPager: BmoViewPager, scrollProgress fraction: CGFloat, index: Int)
     @objc optional func bmoViewPagerDelegate(_ viewPager: BmoViewPager, didAppear viewController: UIViewController, page: Int)
+    @objc optional func scrollFinished(_ viewPager:BmoViewPager)
 }
 
 @IBDesignable
@@ -272,6 +273,16 @@ public class BmoViewPager: UIView, UIScrollViewDelegate {
                 bar.updateFocusProgress(&progressFraction)
             }
         }
+    }
+    
+    public func scrollViewDidEndDragging(_ scrollView:UIScrollView, willDecelerate: Bool) {
+        if willDecelerate == false {
+            delegate?.scrollFinished?(self)
+        }
+    }
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        delegate?.scrollFinished?(self)
     }
     
     public override func layoutSubviews() {
